@@ -1,5 +1,8 @@
 target/
 deploy/*.war
+deploy/AgenHotel/
+*.jar
+backup-*.sql
 .git/
 .idea/
 .vscode/
