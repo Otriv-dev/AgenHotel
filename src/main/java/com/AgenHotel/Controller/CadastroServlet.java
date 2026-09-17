@@ -35,13 +35,16 @@ public class CadastroServlet extends HttpServlet {
 
         try {
             usuarioService.cadastrar(usuario);
+            System.out.println("[AgenHotel] Usuario cadastrado: " + usuario.getEmail());
             request.getSession().setAttribute("mensagem", "Cadastro realizado. Entre com seu e-mail e senha.");
             response.sendRedirect(request.getContextPath() + "/login");
         } catch (IllegalArgumentException e) {
+            System.out.println("[AgenHotel] Cadastro de usuario recusado: " + e.getMessage());
             request.setAttribute("erro", e.getMessage());
             request.setAttribute("usuario", usuario);
             doGet(request, response);
         } catch (SQLException e) {
+            System.out.println("[AgenHotel] Erro ao cadastrar usuario: " + usuario.getEmail());
             request.setAttribute("erro", "Este e-mail já está cadastrado.");
             request.setAttribute("usuario", usuario);
             doGet(request, response);

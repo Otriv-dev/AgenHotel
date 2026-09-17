@@ -9,9 +9,13 @@ public class ReservaService {
         if(r.getHospede()==null||r.getHospede().getId()==0)throw new IllegalArgumentException("Selecione o hospede.");
         if(r.getQuarto()==null||r.getQuarto().getId()==0)throw new IllegalArgumentException("Selecione o quarto.");
         if(r.getDataCheckin()==null||r.getDataCheckout()==null)throw new IllegalArgumentException("Informe as datas.");
+        if(r.getHoraCheckin()==null||r.getHoraCheckout()==null)throw new IllegalArgumentException("Informe os horarios.");
         if(r.getDataCheckin().isBefore(java.time.LocalDate.now()))throw new IllegalArgumentException("A data de entrada nao pode estar no passado.");
-        if(!r.getDataCheckout().isAfter(r.getDataCheckin()))throw new IllegalArgumentException("O checkout deve ser posterior ao check-in.");
-        if(dao.existeConflito(r.getQuarto().getId(),r.getDataCheckin(),r.getDataCheckout()))throw new IllegalArgumentException("O quarto ja possui reserva nesse periodo.");
+        if(!r.getDataCheckout().isAfter(r.getDataCheckin()))throw new IllegalArgumentException("A data de checkout deve ser posterior ao check-in.");
+        java.time.LocalDateTime entrada=r.getDataCheckin().atTime(r.getHoraCheckin());
+        java.time.LocalDateTime saida=r.getDataCheckout().atTime(r.getHoraCheckout());
+        if(!saida.isAfter(entrada))throw new IllegalArgumentException("O checkout deve ser posterior ao check-in.");
+        if(dao.existeConflito(r.getQuarto().getId(),entrada,saida))throw new IllegalArgumentException("O quarto ja possui reserva nesse periodo.");
         dao.inserir(r);
     }
     public void checkin(int id)throws SQLException{

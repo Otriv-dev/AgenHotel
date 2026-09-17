@@ -38,11 +38,13 @@ public class HospedeServlet extends HttpServlet {
             } else if ("excluir".equals(acao)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 hospedeService.excluir(id);
+                System.out.println("[AgenHotel] Hospede excluido. ID: " + id);
                 response.sendRedirect(request.getContextPath() + "/hospedes");
             } else {
                 listar(request, response);
             }
         } catch (SQLException | NumberFormatException e) {
+            System.out.println("[AgenHotel] Erro em operacao de hospede: " + e.getMessage());
             throw new ServletException("Nao foi possivel concluir a operacao.", e);
         }
     }
@@ -63,11 +65,18 @@ public class HospedeServlet extends HttpServlet {
 
         try {
             hospedeService.salvar(hospede);
+            if (hospede.getId() == 0) {
+                System.out.println("[AgenHotel] Hospede cadastrado: " + hospede.getEmail());
+            } else {
+                System.out.println("[AgenHotel] Hospede atualizado. ID: " + hospede.getId());
+            }
             response.sendRedirect(request.getContextPath() + "/hospedes");
         } catch (IllegalArgumentException e) {
+            System.out.println("[AgenHotel] Dados de hospede recusados: " + e.getMessage());
             request.setAttribute("erro", e.getMessage());
             abrirFormulario(request, response, hospede);
         } catch (SQLException e) {
+            System.out.println("[AgenHotel] Erro ao salvar hospede: " + hospede.getEmail());
             request.setAttribute("erro", "Nao foi possivel salvar. Verifique se o e-mail ja esta cadastrado.");
             abrirFormulario(request, response, hospede);
         }

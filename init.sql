@@ -31,7 +31,9 @@ CREATE TABLE IF NOT EXISTS reservas (
     hospede_id INT NOT NULL,
     quarto_id INT NOT NULL,
     data_checkin DATE NOT NULL,
+    hora_checkin TIME NOT NULL DEFAULT '14:00:00',
     data_checkout DATE NOT NULL,
+    hora_checkout TIME NOT NULL DEFAULT '12:00:00',
     status VARCHAR(30) NOT NULL,
 
     FOREIGN KEY (hospede_id) REFERENCES hospedes(id),

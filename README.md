@@ -35,6 +35,7 @@ O sistema tambem possui:
 - lista de quartos com situacao livre, reservada ou ocupada;
 - mapa visual de quartos com acesso direto a nova reserva;
 - reservas com bloqueio de conflito de datas por quarto;
+- horarios de check-in e check-out, com padroes de 14:00 e 12:00;
 - operacoes de check-in, check-out e cancelamento;
 - pesquisa de hospedes, quartos e reservas;
 - dados ficticios para demonstracao: usuarios, hospedes, quartos e reservas.
@@ -80,8 +81,32 @@ Se quiser preservar os dados existentes, aplique o script manualmente:
 Get-Content -Raw .\init.sql | docker exec -i agenhotel-mysql mysql -uagenhotel_user -pagenhotel123 agenhotel
 ```
 
+### Atualizacao para horarios
+
+Se o banco foi criado antes da inclusao dos horarios, execute uma unica vez:
+
+```powershell
+Get-Content -Raw .\migracao_horarios.sql | docker exec -i agenhotel-mysql mysql -uagenhotel_user -pagenhotel123 agenhotel
+```
+
+O check-in inicia selecionado as `14:00` e o check-out as `12:00`. Esses valores
+podem ser alterados pelas listas do formulario. A verificacao de conflito utiliza
+data e horario completos.
+
 ## Quando uma alteracao de CSS nao aparecer
 
 Execute novamente `mvn clean package` e recrie o Tomcat com
 `docker compose up --force-recreate`. No navegador, confirme que a URL comeca com
 `/AgenHotel/`. Nao use `/view/cadastro.jsp` sem o contexto da aplicacao.
+
+## Logs em tempo real
+
+Para acompanhar as acoes da aplicacao no terminal:
+
+```powershell
+docker compose logs -f --tail=100 tomcat
+```
+
+Os logs utilizam o prefixo `[AgenHotel]` e registram cadastro, login, logout,
+alteracoes de hospedes, reservas, check-in, check-out, cancelamentos e erros.
+Senhas nao sao exibidas. Para encerrar o acompanhamento, pressione `Ctrl + C`.

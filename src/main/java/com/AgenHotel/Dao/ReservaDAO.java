@@ -19,16 +19,17 @@ public class ReservaDAO {
             try(ResultSet rs=p.executeQuery()){while(rs.next())lista.add(montar(rs));}
         }return lista;
     }
-    public boolean existeConflito(int quartoId, java.time.LocalDate entrada, java.time.LocalDate saida)throws SQLException{
-        String sql="SELECT COUNT(*) FROM reservas WHERE quarto_id=? AND status IN ('RESERVADA','CHECK_IN') AND ? < data_checkout AND ? > data_checkin";
+    public boolean existeConflito(int quartoId, java.time.LocalDateTime entrada, java.time.LocalDateTime saida)throws SQLException{
+        String sql="SELECT COUNT(*) FROM reservas WHERE quarto_id=? AND status IN ('RESERVADA','CHECK_IN') " +
+                "AND ? < TIMESTAMP(data_checkout,hora_checkout) AND ? > TIMESTAMP(data_checkin,hora_checkin)";
         try(Connection c=banco.getConnection();PreparedStatement p=c.prepareStatement(sql)){
-            p.setInt(1,quartoId);p.setDate(2,java.sql.Date.valueOf(entrada));p.setDate(3,java.sql.Date.valueOf(saida));
+            p.setInt(1,quartoId);p.setTimestamp(2,java.sql.Timestamp.valueOf(entrada));p.setTimestamp(3,java.sql.Timestamp.valueOf(saida));
             try(ResultSet r=p.executeQuery()){r.next();return r.getInt(1)>0;}
         }
     }
     public void inserir(Reserva r)throws SQLException{
-        try(Connection c=banco.getConnection();PreparedStatement p=c.prepareStatement("INSERT INTO reservas(hospede_id,quarto_id,data_checkin,data_checkout,status) VALUES(?,?,?,?, 'RESERVADA')")){
-            p.setInt(1,r.getHospede().getId());p.setInt(2,r.getQuarto().getId());p.setDate(3,java.sql.Date.valueOf(r.getDataCheckin()));p.setDate(4,java.sql.Date.valueOf(r.getDataCheckout()));p.executeUpdate();
+        try(Connection c=banco.getConnection();PreparedStatement p=c.prepareStatement("INSERT INTO reservas(hospede_id,quarto_id,data_checkin,hora_checkin,data_checkout,hora_checkout,status) VALUES(?,?,?,?,?,?, 'RESERVADA')")){
+            p.setInt(1,r.getHospede().getId());p.setInt(2,r.getQuarto().getId());p.setDate(3,java.sql.Date.valueOf(r.getDataCheckin()));p.setTime(4,java.sql.Time.valueOf(r.getHoraCheckin()));p.setDate(5,java.sql.Date.valueOf(r.getDataCheckout()));p.setTime(6,java.sql.Time.valueOf(r.getHoraCheckout()));p.executeUpdate();
         }
     }
     public void alterarStatus(int id,String status)throws SQLException{
@@ -41,6 +42,7 @@ public class ReservaDAO {
         Reserva x=new Reserva();x.setId(r.getInt("id"));
         x.setHospede(new Hospede(r.getInt("hospede_id"),r.getString("hospede_nome"),r.getString("hospede_email"),null));
         x.setQuarto(new Quarto(r.getInt("quarto_id"),r.getInt("numero"),r.getString("tipo"),r.getInt("capacidade"),r.getBigDecimal("preco_diaria"),null));
-        x.setDataCheckin(r.getDate("data_checkin").toLocalDate());x.setDataCheckout(r.getDate("data_checkout").toLocalDate());x.setStatus(r.getString("status"));return x;
+        x.setDataCheckin(r.getDate("data_checkin").toLocalDate());x.setHoraCheckin(r.getTime("hora_checkin").toLocalTime());
+        x.setDataCheckout(r.getDate("data_checkout").toLocalDate());x.setHoraCheckout(r.getTime("hora_checkout").toLocalTime());x.setStatus(r.getString("status"));return x;
     }
 }

@@ -45,6 +45,7 @@ public class LoginServlet extends HttpServlet {
             );
 
             if (usuario == null) {
+                System.out.println("[AgenHotel] Login recusado para: " + request.getParameter("email"));
                 request.setAttribute("erro", "E-mail ou senha incorretos.");
                 request.setAttribute("email", request.getParameter("email"));
                 request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
@@ -53,8 +54,10 @@ public class LoginServlet extends HttpServlet {
 
             usuario.setSenha(null);
             request.getSession().setAttribute("usuarioLogado", usuario);
+            System.out.println("[AgenHotel] Login realizado: " + usuario.getEmail());
             response.sendRedirect(request.getContextPath() + "/hospedes");
         } catch (SQLException e) {
+            System.out.println("[AgenHotel] Erro ao consultar usuario no login.");
             throw new ServletException("Não foi possível consultar o usuário.", e);
         }
     }

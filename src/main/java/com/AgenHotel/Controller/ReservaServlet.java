@@ -1,5 +1,5 @@
 package com.AgenHotel.Controller;
-import com.AgenHotel.Model.*;import com.AgenHotel.Service.*;import jakarta.servlet.*;import jakarta.servlet.annotation.WebServlet;import jakarta.servlet.http.*;import java.io.IOException;import java.sql.SQLException;import java.time.LocalDate;
+import com.AgenHotel.Model.*;import com.AgenHotel.Service.*;import jakarta.servlet.*;import jakarta.servlet.annotation.WebServlet;import jakarta.servlet.http.*;import java.io.IOException;import java.sql.SQLException;import java.time.LocalDate;import java.time.LocalTime;
 @WebServlet("/reservas") public class ReservaServlet extends HttpServlet{
     private static final long serialVersionUID=1L;private final ReservaService service=new ReservaService();private final HospedeService hospedes=new HospedeService();private final QuartoService quartos=new QuartoService();
     protected void doGet(HttpServletRequest req,HttpServletResponse resp)throws ServletException,IOException{
@@ -7,6 +7,8 @@ import com.AgenHotel.Model.*;import com.AgenHotel.Service.*;import jakarta.servl
         try{
             if("novo".equals(acao)){
                 Reserva reserva = new Reserva();
+                reserva.setHoraCheckin(LocalTime.of(14,0));
+                reserva.setHoraCheckout(LocalTime.of(12,0));
                 String quartoId = req.getParameter("quartoId");
                 if (quartoId != null && !quartoId.isBlank()) {
                     Quarto quarto = new Quarto();
@@ -16,10 +18,13 @@ import com.AgenHotel.Model.*;import com.AgenHotel.Service.*;import jakarta.servl
                 abrirForm(req,resp,reserva);return;
             }
             if(acao!=null&&req.getParameter("id")!=null){int id=Integer.parseInt(req.getParameter("id"));
-                if("checkin".equals(acao))service.checkin(id);else if("checkout".equals(acao))service.checkout(id);else if("cancelar".equals(acao))service.cancelar(id);
+                if("checkin".equals(acao)){service.checkin(id);System.out.println("[AgenHotel] Check-in realizado. Reserva ID: "+id);}
+                else if("checkout".equals(acao)){service.checkout(id);System.out.println("[AgenHotel] Check-out realizado. Reserva ID: "+id);}
+                else if("cancelar".equals(acao)){service.cancelar(id);System.out.println("[AgenHotel] Reserva cancelada. ID: "+id);}
                 resp.sendRedirect(req.getContextPath()+"/reservas");return;}
             listar(req,resp);
         } catch (IllegalArgumentException e) {
+            System.out.println("[AgenHotel] Operacao de reserva recusada: " + e.getMessage());
             req.setAttribute("erro", e.getMessage());
             try {
                 listar(req, resp);
@@ -27,13 +32,14 @@ import com.AgenHotel.Model.*;import com.AgenHotel.Service.*;import jakarta.servl
                 throw new ServletException("Nao foi possivel listar as reservas.", sqlException);
             }
         } catch (SQLException e) {
+            System.out.println("[AgenHotel] Erro em operacao de reserva: " + e.getMessage());
             throw new ServletException("Nao foi possivel concluir a operacao.", e);
         }
     }
     protected void doPost(HttpServletRequest req,HttpServletResponse resp)throws ServletException,IOException{
         req.setCharacterEncoding("UTF-8");Reserva r=new Reserva();Hospede h=new Hospede();Quarto q=new Quarto();
-        try{h.setId(Integer.parseInt(req.getParameter("hospedeId")));q.setId(Integer.parseInt(req.getParameter("quartoId")));r.setHospede(h);r.setQuarto(q);r.setDataCheckin(LocalDate.parse(req.getParameter("dataCheckin")));r.setDataCheckout(LocalDate.parse(req.getParameter("dataCheckout")));service.reservar(r);resp.sendRedirect(req.getContextPath()+"/reservas");}
-        catch(IllegalArgumentException|SQLException e){req.setAttribute("erro",e.getMessage());abrirForm(req,resp,r);}
+        try{h.setId(Integer.parseInt(req.getParameter("hospedeId")));q.setId(Integer.parseInt(req.getParameter("quartoId")));r.setHospede(h);r.setQuarto(q);r.setDataCheckin(LocalDate.parse(req.getParameter("dataCheckin")));r.setHoraCheckin(LocalTime.parse(req.getParameter("horaCheckin")));r.setDataCheckout(LocalDate.parse(req.getParameter("dataCheckout")));r.setHoraCheckout(LocalTime.parse(req.getParameter("horaCheckout")));service.reservar(r);System.out.println("[AgenHotel] Reserva criada. Quarto ID: "+q.getId()+", periodo: "+r.getDataCheckin()+" "+r.getHoraCheckin()+" ate "+r.getDataCheckout()+" "+r.getHoraCheckout());resp.sendRedirect(req.getContextPath()+"/reservas");}
+        catch(IllegalArgumentException|SQLException e){System.out.println("[AgenHotel] Erro ao criar reserva: "+e.getMessage());req.setAttribute("erro",e.getMessage());abrirForm(req,resp,r);}
     }
     private void listar(HttpServletRequest req,HttpServletResponse resp)throws SQLException,ServletException,IOException{
         String busca=req.getParameter("busca");String status=req.getParameter("status");int quartoId=0;
