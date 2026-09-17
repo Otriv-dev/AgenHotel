@@ -1,0 +1,36 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: agenhotel-mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: agenhotel
+      MYSQL_USER: agenhotel_user
+      MYSQL_PASSWORD: agenhotel123
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  tomcat:
+    image: tomcat:10.1-jdk21
+    container_name: agenhotel-tomcat
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      # O Tomcat executa o mesmo WAR que foi gerado pelo Maven.
+      # Assim nao existe uma segunda copia antiga das paginas no ROOT.
+      - ./deploy/AgenHotel.war:/usr/local/tomcat/webapps/AgenHotel.war:ro
+
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

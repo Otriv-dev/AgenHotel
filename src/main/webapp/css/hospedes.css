@@ -1,0 +1,111 @@
+:root { --ouro: #f0b55a; --fundo: #07111f; --painel: #0e1c2d; --linha: #26384d; --texto: #edf4ff; --suave: #91a1b7; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; color: var(--texto); font-family: "Segoe UI", Arial, sans-serif; background: radial-gradient(circle at 80% 0, #183250 0, transparent 30%), var(--fundo); }
+.topo { border-bottom: 1px solid rgba(255,255,255,.1); background: rgba(7,17,31,.82); backdrop-filter: blur(14px); }
+.topo-conteudo, .conteudo { width: min(1080px, 92%); margin: 0 auto; }
+.topo-conteudo { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.topo h1 { margin: 0; font-size: 1.3rem; }
+.topo h1::before { content: "A"; color: var(--ouro); margin-right: 9px; }
+.topo nav { display: flex; align-items: center; gap: 18px; color: var(--suave); }
+.topo a { color: var(--ouro); text-decoration: none; }
+.conteudo { margin-top: 55px; padding: 32px; background: rgba(14,28,45,.88); border: 1px solid rgba(255,255,255,.1); border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,.28); }
+.titulo-linha { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.titulo-linha h2, .conteudo > h2 { margin: 0 0 20px; font-size: 1.8rem; }
+.botao, button { display: inline-block; padding: 10px 15px; border: 0; border-radius: 9px; background: linear-gradient(135deg, #ffd98a, var(--ouro)); color: #19120a; text-decoration: none; font-weight: 700; cursor: pointer; }
+.botao-secundario { background: #293b50; color: var(--texto); }
+.botao-perigo { background: #7c2d36; color: #ffe6e8; }
+table { width: 100%; margin-top: 24px; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+th, td { padding: 14px; border-bottom: 1px solid var(--linha); text-align: left; }
+th { color: var(--suave); background: #0a1625; font-size: .78rem; letter-spacing: 1px; text-transform: uppercase; }
+td { background: rgba(12,25,41,.72); }
+.acoes { display: flex; gap: 8px; }
+.campo { margin-bottom: 18px; }
+.campo label { display: block; margin-bottom: 7px; color: #bdc9d8; font-weight: 650; }
+.campo input { width: 100%; padding: 12px; color: var(--texto); background: #091523; border: 1px solid var(--linha); border-radius: 9px; outline: none; font: inherit; }
+.campo select { width: 100%; padding: 12px; color: var(--texto); background: #091523; border: 1px solid var(--linha); border-radius: 9px; outline: none; font: inherit; }
+.campo input:focus { border-color: var(--ouro); box-shadow: 0 0 0 3px rgba(240,181,90,.12); }
+.erro { padding: 11px; color: #ffb8b8; background: rgba(148,35,35,.25); border-radius: 8px; }
+.subtexto { margin: 5px 0 0; color: var(--suave); }
+.conteudo-largo { width: min(1200px, 95%); }
+.pesquisa { display: flex; gap: 10px; align-items: center; margin: 25px 0 5px; }
+.pesquisa input { flex: 1; padding: 11px 13px; color: var(--texto); background: #091523; border: 1px solid var(--linha); border-radius: 9px; font: inherit; }
+.pesquisa a { color: var(--ouro); text-decoration: none; padding: 10px; }
+.status { display: inline-block; padding: 6px 9px; border-radius: 20px; font-size: .76rem; font-weight: 800; }
+.status-LIVRE, .status-CHECK_OUT { color: #a7f3c2; background: #174b32; }
+.status-RESERVADO, .status-RESERVADA { color: #ffe0a3; background: #594017; }
+.status-OCUPADO, .status-CHECK_IN { color: #ffc0c0; background: #5b2228; }
+.status-CANCELADA { color: #c5ced9; background: #344154; }
+.botao-sucesso { color: #e4fff0; background: #1d6b43; }
+.grade-datas { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-reserva { max-width: 760px; }
+td small { display: block; margin-top: 4px; color: var(--suave); }
+.tabela-scroll { overflow-x: auto; }
+.resumo-quartos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 34px 0 26px; }
+.resumo-item { display: flex; align-items: center; gap: 15px; min-height: 94px; padding: 20px 22px; border: 1px solid var(--linha); border-radius: 15px; background: rgba(7,17,31,.55); }
+.resumo-item > div { display: flex; flex-direction: column; gap: 4px; }
+.resumo-item strong { display: block; color: var(--texto); font-size: 1.9rem; line-height: 1; }
+.resumo-item span { color: var(--suave); font-size: .9rem; }
+.resumo-icone { display: grid; place-items: center; width: 43px; height: 43px; flex: 0 0 43px; border-radius: 12px; font-size: 1.15rem !important; font-weight: 900; }
+.resumo-livre .resumo-icone { color: #a7f3c2; background: #174b32; }
+.resumo-reservado .resumo-icone { color: #ffe0a3; background: #594017; }
+.resumo-ocupado .resumo-icone { color: #ffc0c0; background: #5b2228; }
+.barra-filtros { display: grid; grid-template-columns: minmax(180px, .55fr) minmax(520px, 1.45fr); align-items: center; gap: 24px; margin: 8px 0 30px; padding: 20px 22px; background: rgba(7,17,31,.55); border: 1px solid var(--linha); border-radius: 14px; }
+.filtro-titulo { display: flex; flex-direction: column; gap: 5px; }
+.filtro-titulo strong { font-size: 1.02rem; }
+.filtro-titulo span { color: var(--suave); font-size: .84rem; line-height: 1.4; }
+.pesquisa-completa { display: grid; grid-template-columns: minmax(130px, 1fr) minmax(150px, .8fr) minmax(150px, .8fr) auto auto; gap: 9px; margin: 0; }
+.pesquisa select { min-width: 0; padding: 11px 12px; color: var(--texto); background: #091523; border: 1px solid var(--linha); border-radius: 9px; font: inherit; }
+.pesquisa select:focus, .pesquisa input:focus { border-color: var(--ouro); outline: none; box-shadow: 0 0 0 3px rgba(240,181,90,.12); }
+.grade-quartos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 4px; }
+.cartao-quarto { display: flex; flex-direction: column; min-height: 300px; padding: 24px; border: 1px solid var(--linha); border-radius: 17px; background: linear-gradient(150deg, rgba(17,37,59,.92), rgba(8,20,34,.92)); box-shadow: 0 12px 30px rgba(0,0,0,.16); transition: transform .18s ease, border-color .18s ease; }
+.cartao-quarto:hover { transform: translateY(-3px); border-color: #3c5774; }
+.cartao-quarto-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.cartao-quarto small { color: var(--suave); letter-spacing: 1px; }
+.cartao-quarto h3 { margin: 3px 0 0; color: var(--ouro); font-size: 2rem; }
+.tipo-quarto { margin: 19px 0 17px; padding-bottom: 15px; border-bottom: 1px solid var(--linha); font-size: 1.05rem; font-weight: 700; }
+.dados-quarto { display: flex; flex: 1; flex-direction: column; gap: 12px; color: var(--suave); }
+.dados-quarto span { display: flex; justify-content: space-between; gap: 12px; }
+.dados-quarto b { color: var(--texto); font-weight: 600; }
+.dados-quarto strong { color: var(--ouro); }
+.botao-bloco { width: 100%; margin-top: 18px; text-align: center; }
+.aviso-info { margin: 24px 0 0; padding: 14px; color: #c7d9ee; background: rgba(27,69,108,.32); border: 1px solid #294d70; border-radius: 10px; }
+.acoes-topo { display: flex; gap: 10px; }
+.ajuda-campo { display: block; margin-top: 7px; color: var(--suave); }
+.cabecalho-lista { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 34px 0 16px; }
+.cabecalho-lista h3 { margin: 0 0 4px; font-size: 1.2rem; }
+.cabecalho-lista p { margin: 0; color: var(--suave); font-size: .88rem; }
+.contador-lista { padding: 7px 11px; color: var(--suave); background: #0a1625; border: 1px solid var(--linha); border-radius: 20px; font-size: .8rem; }
+.lista-reservas { display: grid; gap: 17px; }
+.cartao-reserva { overflow: hidden; border: 1px solid var(--linha); border-radius: 16px; background: rgba(8,20,34,.78); box-shadow: 0 10px 25px rgba(0,0,0,.12); }
+.reserva-identificacao { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 20px 22px; border-bottom: 1px solid var(--linha); }
+.avatar-hospede { display: grid; place-items: center; width: 46px; height: 46px; color: #251a0c; background: linear-gradient(135deg, #ffd98a, var(--ouro)); border-radius: 13px; font-size: 1.2rem; font-weight: 900; }
+.hospede-dados { min-width: 0; }
+.hospede-dados small, .reserva-detalhes small { display: block; margin-bottom: 4px; color: var(--suave); letter-spacing: .9px; font-size: .68rem; }
+.hospede-dados h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.hospede-dados span { display: block; overflow: hidden; color: var(--suave); font-size: .85rem; text-overflow: ellipsis; white-space: nowrap; }
+.reserva-detalhes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; padding: 18px 22px; }
+.reserva-detalhes > div { display: flex; flex-direction: column; padding: 4px 22px; border-right: 1px solid var(--linha); }
+.reserva-detalhes > div:first-child { padding-left: 0; }
+.reserva-detalhes > div:last-child { border-right: 0; }
+.reserva-detalhes strong { margin-bottom: 4px; font-size: 1rem; }
+.reserva-detalhes span { color: var(--suave); font-size: .82rem; }
+.reserva-acoes { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 65px; padding: 13px 22px; background: rgba(5,14,24,.62); border-top: 1px solid var(--linha); }
+.reserva-acoes > span { color: var(--suave); font-size: .84rem; }
+.reserva-acoes > div { display: flex; gap: 8px; }
+.estado-vazio { padding: 44px 20px; text-align: center; color: var(--suave); border: 1px dashed var(--linha); border-radius: 14px; }
+.estado-vazio h3 { color: var(--texto); }
+.form-reserva { width: min(900px, 92%); }
+.form-cabecalho { display: flex; align-items: flex-start; justify-content: space-between; gap: 22px; margin-bottom: 28px; }
+.form-cabecalho h2 { margin: 7px 0 8px; }
+.etiqueta { color: var(--ouro); font-size: .72rem; font-weight: 800; letter-spacing: 1.4px; }
+.formulario-reserva { display: grid; gap: 17px; }
+.etapa-form { display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 17px; padding: 22px; background: rgba(7,17,31,.5); border: 1px solid var(--linha); border-radius: 15px; }
+.numero-etapa { display: grid; place-items: center; width: 38px; height: 38px; color: #251a0c; background: linear-gradient(135deg, #ffd98a, var(--ouro)); border-radius: 11px; font-weight: 900; }
+.conteudo-etapa h3 { margin: 3px 0 5px; font-size: 1.08rem; }
+.conteudo-etapa > p { margin: 0 0 18px; color: var(--suave); font-size: .86rem; }
+.conteudo-etapa .campo { margin-bottom: 0; }
+.acoes-form { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 5px; }
+@media (max-width: 700px) { .titulo-linha, .topo-conteudo, .acoes, .pesquisa { align-items: flex-start; flex-direction: column; } .topo-conteudo { padding: 18px 0; } .conteudo { padding: 22px; overflow-x: auto; } .grade-datas { grid-template-columns: 1fr; } .pesquisa input { width: 100%; } }
+@media (max-width: 1050px) { .barra-filtros { grid-template-columns: 1fr; } .grade-quartos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .pesquisa-completa { display: flex; align-items: stretch; flex-direction: column; width: 100%; } .reserva-detalhes { grid-template-columns: 1fr; gap: 15px; } .reserva-detalhes > div { padding: 0 0 15px; border-right: 0; border-bottom: 1px solid var(--linha); } .reserva-detalhes > div:last-child { padding-bottom: 0; border-bottom: 0; } .reserva-acoes { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 600px) { .grade-quartos, .resumo-quartos { grid-template-columns: 1fr; } .acoes-topo, .form-cabecalho { align-items: stretch; flex-direction: column; width: 100%; } .reserva-identificacao { grid-template-columns: 42px minmax(0,1fr); } .reserva-identificacao > .status { grid-column: 1 / -1; width: max-content; } .reserva-acoes > div, .acoes-form { align-items: stretch; flex-direction: column; width: 100%; } .reserva-acoes .botao, .acoes-form .botao, .acoes-form button { text-align: center; } .etapa-form { grid-template-columns: 1fr; } }
